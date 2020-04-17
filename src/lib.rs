@@ -25,16 +25,18 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn new(mut args: std::env::Args) -> Result<Config, &'static str> {
-        args.next(); // program name
-        let query = match args.next() {
-            Some(arg) => arg,
-            None => return Err("Didn't get a query string"),
-        };
-        let filename = match args.next() {
-            Some(arg) => arg,
-            None => return Err("Didn't get a file name"),
-        };
+    pub fn new(args: Box<Vec<String>>) -> Result<Config, &'static str> {
+        let query = args[1].clone();
+        let filename = args[2].clone();
+        // args.next(); // program name
+        // let query = match args.next() {
+        //     Some(arg) => arg,
+        //     None => return Err("Didn't get a query string"),
+        // };
+        // let filename = match args.next() {
+        //     Some(arg) => arg,
+        //     None => return Err("Didn't get a file name"),
+        // };
         let case_sensitive = env::var("CASE_INSENSITIVE").is_err();
 
         Ok(Config { query, filename, case_sensitive })
